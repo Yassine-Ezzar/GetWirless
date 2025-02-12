@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Middleware pour l'authentification de l'utilisateur (Parent)
+// Middleware pour l'authentification
 export const authenticate = async (req, res, next) => {
   try {
     const token = req.header("Authorization");
