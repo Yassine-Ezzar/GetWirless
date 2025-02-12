@@ -1,0 +1,33 @@
+### 🔹 Inscription Parent
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "parent@example.com",
+  "password": "password123"
+}
+
+### 🔹 Connexion Parent
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "parent@example.com",
+  "password": "password123"
+}
+
+### 🔹 Générer un code pour l’enfant
+POST http://localhost:5000/api/auth/generate-child-code
+Content-Type: application/json
+
+{
+  "parentId": "64ae1a8a8b2bdbf9c92f8e65"
+}
+
+### 🔹 Connexion Enfant
+POST http://localhost:5000/api/auth/login-child
+Content-Type: application/json
+
+{
+  "childCode": "ABCD12"
+}
