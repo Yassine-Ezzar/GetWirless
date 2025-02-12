@@ -52,3 +52,33 @@ Content-Type: application/json
   "token": "RESET_TOKEN_HERE",
   "newPassword": "newpassword123"
 }
+
+
+**************************
+
+### 🔹 Créer un Enfant
+POST http://localhost:5000/api/children/create
+Content-Type: application/json
+Authorization: Bearer <token_parent>
+
+{
+  "parentId": "parent_id_here",
+  "childCode": "XYZ123"
+}
+
+### 🔹 Récupérer un Enfant
+GET http://localhost:5000/api/children/<childId>
+Authorization: Bearer <token_parent>
+
+### 🔹 Modifier un Enfant
+PUT http://localhost:5000/api/children/<childId>
+Content-Type: application/json
+Authorization: Bearer <token_parent>
+
+{
+  "childCode": "NEWCODE123"
+}
+
+### 🔹 Supprimer un Enfant
+DELETE http://localhost:5000/api/children/<childId>
+Authorization: Bearer <token_parent>
