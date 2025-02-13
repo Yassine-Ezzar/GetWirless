@@ -1,56 +1,61 @@
-import mongoose from "mongoose";
-import ScreenTime from "../models/ScreenTime.js";
-import Child from "../models/Child.js";
+// services/screenTimeService.js
+import ScreenTime from '../models/ScreenTime.js';
 
-/**
- * Créer ou mettre à jour le temps d’écran d’un enfant
- */
-export const setScreenTime = async (childId, dailyLimit) => {
-  return await ScreenTime.findOneAndUpdate(
-    { childId },
-    { dailyLimit },
-    { upsert: true, new: true }
-  );
-};
-
-export const getScreenTime = async (childId) => {
-  if (!childId) {
-    throw new Error("childId est requis.");
+class ScreenTimeService {
+  // Récupère les règles de temps d'écran d'un enfant
+  static async getScreenTime(childId) {
+    return await ScreenTime.findOne({ child: childId });
   }
 
-  
-  const child = await Child.findById(childId);
-  if (!child) {
-    throw new Error("Enfant non trouvé.");
+  // Crée ou met à jour les règles de temps d'écran
+  static async setScreenTime(childId, dailyLimit, weeklyLimit) {
+    let screenTime = await ScreenTime.findOne({ child: childId });
+
+    if (screenTime) {
+      screenTime.dailyLimit = dailyLimit;
+      screenTime.weeklyLimit = weeklyLimit;
+    } else {
+      screenTime = new ScreenTime({
+        child: childId,
+        dailyLimit,
+        weeklyLimit,
+      });
+    }
+
+    await screenTime.save();
+    return screenTime;
   }
 
-  
-  const screenTime = await ScreenTime.findOne({ childId });
-  if (!screenTime) {
-    throw new Error("Aucune donnée de temps d'écran trouvée.");
+  // Met à jour le temps d'écran utilisé (aujourd'hui ou cette semaine)
+  static async updateUsedTime(childId, timeSpent, isToday = true) {
+    const screenTime = await ScreenTime.findOne({ child: childId });
+
+    if (isToday) {
+      screenTime.usedToday += timeSpent;
+    } else {
+      screenTime.usedThisWeek += timeSpent;
+    }
+
+    // Si le temps d'écran dépasse les limites, on bloque l'appareil
+    if (screenTime.usedToday > screenTime.dailyLimit || screenTime.usedThisWeek > screenTime.weeklyLimit) {
+      screenTime.isBlocked = true;
+    }
+
+    await screenTime.save();
+    return screenTime;
   }
 
-  return screenTime;
-};
+  // Débloque l'appareil si le temps d'écran est réinitialisé
+  static async resetScreenTime(childId) {
+    const screenTime = await ScreenTime.findOne({ child: childId });
 
+    screenTime.usedToday = 0;
+    screenTime.usedThisWeek = 0;
+    screenTime.isBlocked = false;
 
-
-
-/**
- * Mettre à jour le temps d’écran utilisé
- */
-export const updateUsedTime = async (childId, minutes) => {
-  const screenTime = await ScreenTime.findOne({ childId });
-
-  if (!screenTime) {
-    throw new Error("Aucune donnée de temps d'écran trouvée.");
+    await screenTime.save();
+    return screenTime;
   }
+}
 
-  screenTime.usedTime += minutes;
-  
-  if (screenTime.usedTime > screenTime.dailyLimit) {
-    throw new Error("Temps d’écran dépassé !");
-  }
-
-  return await screenTime.save();
-};
+export default ScreenTimeService;

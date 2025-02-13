@@ -85,25 +85,25 @@ Authorization: Bearer <token_parent>
 
 ***************************************************************************
 
-### Définir une limite de temps d’écran
-POST http://localhost:5000/api/screen-time/set
-Content-Type: application/json
+### Récupérer les règles de temps d'écran d'un enfant
+GET http://localhost:5000/api/screen-time/{childId}
 
+### Définir les règles de temps d'écran pour un enfant
+POST http://localhost:5000/api/screen-time/{childId}
+Content-Type: application/json
 {
-  "childId": "ID_DU_CHILD",
-  "dailyLimit": 180
+  "dailyLimit": 120,
+  "weeklyLimit": 600
 }
 
-
-### Obtenir le temps d’écran d’un enfant
-GET http://localhost:5000/api/screen-time/ID_DU_CHILD
-
-### Ajouter du temps utilisé
-PUT http://localhost:5000/api/screen-time/add-time
+### Mettre à jour le temps d'écran utilisé
+PUT http://localhost:5000/api/screen-time/{childId}/update
 Content-Type: application/json
-
 {
-  "childId": "ID_DU_CHILD",
-  "minutes": 30
+  "timeSpent": 30,
+  "isToday": true
 }
+
+### Réinitialiser le temps d'écran
+PUT http://localhost:5000/api/screen-time/{childId}/reset
 

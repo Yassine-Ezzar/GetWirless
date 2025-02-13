@@ -1,52 +1,65 @@
-import { setScreenTime, getScreenTime, updateUsedTime } from "../services/screenTimeService.js";
-import Child from "../models/Child.js";
+// controllers/screenTimeController.js
+import ScreenTimeService from '../services/screenTimeService.js';
 
-
-export const setScreenTimeLimit = async (req, res) => {
-  try {
-    console.log("BODY RECU :", req.body); // Debugging
-
-    const { childId, dailyLimit } = req.body;
-    if (!childId || !dailyLimit) {
-      return res.status(400).json({ error: "childId et dailyLimit sont requis." });
+class ScreenTimeController {
+  // Récupère les règles de temps d'écran d'un enfant
+  static async getScreenTime(req, res) {
+    try {
+      const { childId } = req.params;
+      const screenTime = await ScreenTimeService.getScreenTime(childId);
+      if (!screenTime) {
+        return res.status(404).json({ message: 'Temps d\'écran non trouvé pour cet enfant.' });
+      }
+      return res.status(200).json(screenTime);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
-
-    const screenTime = await setScreenTime(childId, dailyLimit);
-    res.status(200).json({ message: "Temps d’écran mis à jour.", screenTime });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-};
 
+  // Crée ou met à jour les règles de temps d'écran d'un enfant
+  static async setScreenTime(req, res) {
+    try {
+      const { childId } = req.params;
+      const { dailyLimit, weeklyLimit } = req.body;
 
-export const getScreenTimeInfo = async (req, res) => {
-  try {
-    console.log("Paramètres reçus :", req.params); // Debugging
+      if (!dailyLimit || !weeklyLimit) {
+        return res.status(400).json({ message: 'Les limites quotidiennes et hebdomadaires sont requises.' });
+      }
 
-    const { childId } = req.params;
-    if (!childId) {
-      return res.status(400).json({ error: "childId est requis." });
+      const screenTime = await ScreenTimeService.setScreenTime(childId, dailyLimit, weeklyLimit);
+      return res.status(200).json(screenTime);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
-
-    console.log("Recherche du temps d'écran pour l'enfant :", childId); // Debugging
-    const screenTime = await getScreenTime(childId); // Appel du service
-    res.status(200).json({ screenTime });
-  } catch (error) {
-    console.error("Erreur lors de la récupération du temps d'écran :", error); // Debugging
-    res.status(500).json({ error: error.message });
   }
-};;
 
+  // Met à jour le temps d'écran utilisé
+  static async updateUsedTime(req, res) {
+    try {
+      const { childId } = req.params;
+      const { timeSpent, isToday } = req.body;
 
-/**
- * Mettre à jour le temps utilisé
- */
-export const addUsedScreenTime = async (req, res) => {
-  try {
-    const { childId, minutes } = req.body;
-    const updatedScreenTime = await updateUsedTime(childId, minutes);
-    res.status(200).json({ message: "Temps utilisé mis à jour", updatedScreenTime });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+      if (!timeSpent) {
+        return res.status(400).json({ message: 'Le temps passé est requis.' });
+      }
+
+      const screenTime = await ScreenTimeService.updateUsedTime(childId, timeSpent, isToday);
+      return res.status(200).json(screenTime);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
   }
-};
+
+  // Réinitialise le temps d'écran
+  static async resetScreenTime(req, res) {
+    try {
+      const { childId } = req.params;
+      const screenTime = await ScreenTimeService.resetScreenTime(childId);
+      return res.status(200).json(screenTime);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+export default ScreenTimeController;

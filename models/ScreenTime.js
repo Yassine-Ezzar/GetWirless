@@ -1,34 +1,18 @@
-import mongoose from "mongoose";
+// models/ScreenTime.js
+import mongoose from 'mongoose';
 
-const screenTimeSchema = new mongoose.Schema({
-  childId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Child",
-    required: true,
+const screenTimeSchema = new mongoose.Schema(
+  {
+    child: { type: mongoose.Schema.Types.ObjectId, ref: 'Child', required: true },
+    dailyLimit: { type: Number, required: true },  // Limite quotidienne en minutes
+    weeklyLimit: { type: Number, required: true },  // Limite hebdomadaire en minutes
+    usedToday: { type: Number, default: 0 }, // Temps d'écran utilisé aujourd'hui
+    usedThisWeek: { type: Number, default: 0 }, // Temps d'écran utilisé cette semaine
+    isBlocked: { type: Boolean, default: false }, // Si l'accès est bloqué
   },
-  dailyLimit: {
-    type: Number, // Temps en minutes
-    required: true,
-  },
-  usedTime: {
-    type: Number,
-    default: 0, // Temps déjà utilisé dans la journée
-  },
-  startTime: {
-    type: Date, // Heure de début d'utilisation
-  },
-  endTime: {
-    type: Date, // Heure de fin d'utilisation
-  },
-  status: {
-    type: String,
-    enum: ["active", "blocked"], // Statut du contrôle
-    default: "active",
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  { timestamps: true }
+);
 
-export default mongoose.model("ScreenTime", screenTimeSchema);
+const ScreenTime = mongoose.model('ScreenTime', screenTimeSchema);
+
+export default ScreenTime;
