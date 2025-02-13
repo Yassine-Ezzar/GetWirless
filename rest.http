@@ -107,3 +107,36 @@ Content-Type: application/json
 ### Réinitialiser le temps d'écran
 PUT http://localhost:5000/api/screen-time/{childId}/reset
 
+
+
+***************************************************************************
+
+### Récupérer les règles de filtrage d'un enfant
+GET http://localhost:5000/api/content-filter/childId123
+
+### Mettre à jour la liste noire et la liste blanche
+PUT http://localhost:5000/api/content-filter/childId123/lists
+Content-Type: application/json
+
+{
+  "blacklist": ["example.com", "badwebsite.com"],
+  "whitelist": ["goodwebsite.com", "educational.com"]
+}
+
+### Mettre à jour les catégories bloquées
+PUT http://localhost:5000/api/content-filter/childId123/categories
+Content-Type: application/json
+
+{
+  "blockedCategories": ["adult", "nudity"]
+}
+
+### Vérifier si un site est bloqué
+POST http://localhost:5000/api/proxy
+Content-Type: application/json
+
+{
+  "childId": "childId123",
+  "url": "example.com"
+}
+
