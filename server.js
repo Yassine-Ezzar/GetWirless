@@ -5,10 +5,16 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import authRoutes from "./routes/authRoutes.js";
 import childRoutes from "./routes/childRoutes.js";
+import screenTimeRoutes from "./routes/screenTimeRoutes.js";
+import "./models/Child.js"; // Assure-toi que le modèle est chargé
+
+
 
 dotenv.config();
 const app = express();
+app.use(express.json());
 
+app.use("/api/screen-time", screenTimeRoutes);
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));

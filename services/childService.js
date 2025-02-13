@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 
-// Service pour créer un enfant (en fait, cela pourrait être une logique plus complexe plus tard)
+
 export const createChildService = async (parentId, childCode) => {
   const parent = await User.findById(parentId);
   if (!parent || parent.role !== "parent") throw new Error("Parent introuvable");
