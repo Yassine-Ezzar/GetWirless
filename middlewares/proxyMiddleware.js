@@ -1,19 +1,16 @@
-// middleware/proxyMiddleware.js
 import ContentFilterService from '../services/contentFilterService.js';
 
 const proxyMiddleware = async (req, res, next) => {
-  const { childId } = req.user;
-  const url = req.body.url; 
+  if (!req.user) return res.status(401).json({ message: "Utilisateur non authentifié." });
 
-  if (!childId || !url) {
-    return res.status(400).json({ message: "Requête invalide." });
-  }
+  const { childId } = req.user;
+  const { url } = req.body;
+
+  if (!childId || !url) return res.status(400).json({ message: "Requête invalide." });
 
   const isBlocked = await ContentFilterService.isBlocked(childId, url);
 
-  if (isBlocked) {
-    return res.status(403).json({ message: "Accès refusé : site bloqué." });
-  }
+  if (isBlocked) return res.status(403).json({ message: "Accès refusé : site bloqué." });
 
   next();
 };

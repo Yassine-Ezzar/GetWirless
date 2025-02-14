@@ -8,6 +8,7 @@ import childRoutes from "./routes/childRoutes.js";
 import screenTimeRoutes from "./routes/screenTimeRoutes.js";
 import "./models/Child.js"; 
 import helmet from 'helmet';
+
 import contentFilterRoutes from './routes/contentFilterRoutes.js';
 import proxyRoutes from './routes/proxyRoutes.js';
 
@@ -16,6 +17,7 @@ import proxyRoutes from './routes/proxyRoutes.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
+
 app.use(helmet());
 app.use('/api/proxy', proxyRoutes);
 app.use('/api/content-filter', contentFilterRoutes);
