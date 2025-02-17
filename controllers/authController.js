@@ -7,7 +7,7 @@ import crypto from "crypto";
 
 dotenv.config();
 
-// Fonction d'inscription du parent
+
 export const registerParent = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -28,7 +28,7 @@ export const registerParent = async (req, res) => {
   }
 };
 
-// Fonction de connexion du parent
+
 export const loginParent = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -45,7 +45,7 @@ export const loginParent = async (req, res) => {
   }
 };
 
-// Générer un code pour l'enfant
+
 export const generateChildCode = async (req, res) => {
   try {
     const { parentId } = req.body;
@@ -67,7 +67,7 @@ export const generateChildCode = async (req, res) => {
   }
 };
 
-// Fonction de connexion de l'enfant
+
 export const loginChild = async (req, res) => {
   try {
     const { childCode } = req.body;
@@ -96,7 +96,7 @@ export const loginChild = async (req, res) => {
   }
 };
 
-// Fonction pour récupérer le profil de l'utilisateur
+
 export const getUserProfile = (req, res) => {
   const user = req.user;
   res.status(200).json({
@@ -130,7 +130,7 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-// Reset Password
+
 export const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;

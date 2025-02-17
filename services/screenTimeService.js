@@ -1,13 +1,10 @@
-// services/screenTimeService.js
 import ScreenTime from '../models/ScreenTime.js';
 
 class ScreenTimeService {
-  // Récupère les règles de temps d'écran d'un enfant
   static async getScreenTime(childId) {
     return await ScreenTime.findOne({ child: childId });
   }
 
-  // Crée ou met à jour les règles de temps d'écran
   static async setScreenTime(childId, dailyLimit, weeklyLimit) {
     let screenTime = await ScreenTime.findOne({ child: childId });
 
@@ -26,7 +23,6 @@ class ScreenTimeService {
     return screenTime;
   }
 
-  // Met à jour le temps d'écran utilisé (aujourd'hui ou cette semaine)
   static async updateUsedTime(childId, timeSpent, isToday = true) {
     const screenTime = await ScreenTime.findOne({ child: childId });
 
@@ -36,7 +32,6 @@ class ScreenTimeService {
       screenTime.usedThisWeek += timeSpent;
     }
 
-    // Si le temps d'écran dépasse les limites, on bloque l'appareil
     if (screenTime.usedToday > screenTime.dailyLimit || screenTime.usedThisWeek > screenTime.weeklyLimit) {
       screenTime.isBlocked = true;
     }
@@ -45,7 +40,6 @@ class ScreenTimeService {
     return screenTime;
   }
 
-  // Débloque l'appareil si le temps d'écran est réinitialisé
   static async resetScreenTime(childId) {
     const screenTime = await ScreenTime.findOne({ child: childId });
 

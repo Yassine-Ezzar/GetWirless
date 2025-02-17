@@ -5,12 +5,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Créer un enfant (généralement après la génération du code)
 export const createChild = async (req, res) => {
   try {
     const { parentId, childCode } = req.body;
 
-    // Vérifier que le parent existe
     const parent = await User.findById(parentId);
     if (!parent || parent.role !== "parent") {
       return res.status(400).json({ message: "Parent introuvable ou non valide" });
@@ -21,7 +19,6 @@ export const createChild = async (req, res) => {
       return res.status(400).json({ message: "Code d'enfant déjà utilisé" });
     }
 
-    // Créer un nouvel enfant
     const newChild = new User({
       role: "child",
       childCode,
@@ -35,7 +32,6 @@ export const createChild = async (req, res) => {
   }
 };
 
-// Récupérer un enfant par son ID
 export const getChild = async (req, res) => {
   try {
     const { childId } = req.params;
@@ -51,7 +47,6 @@ export const getChild = async (req, res) => {
   }
 };
 
-// Modifier un enfant (ex : mettre à jour son code)
 export const updateChild = async (req, res) => {
   try {
     const { childId } = req.params;
@@ -70,7 +65,6 @@ export const updateChild = async (req, res) => {
   }
 };
 
-// Supprimer un enfant
 export const deleteChild = async (req, res) => {
   try {
     const { childId } = req.params;

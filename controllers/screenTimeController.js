@@ -1,8 +1,6 @@
-// controllers/screenTimeController.js
 import ScreenTimeService from '../services/screenTimeService.js';
 
 class ScreenTimeController {
-  // Récupère les règles de temps d'écran d'un enfant
   static async getScreenTime(req, res) {
     try {
       const { childId } = req.params;
@@ -16,7 +14,6 @@ class ScreenTimeController {
     }
   }
 
-  // Crée ou met à jour les règles de temps d'écran d'un enfant
   static async setScreenTime(req, res) {
     try {
       const { childId } = req.params;
@@ -33,7 +30,6 @@ class ScreenTimeController {
     }
   }
 
-  // Met à jour le temps d'écran utilisé
   static async updateUsedTime(req, res) {
     try {
       const { childId } = req.params;
@@ -50,7 +46,6 @@ class ScreenTimeController {
     }
   }
 
-  // Réinitialise le temps d'écran
   static async resetScreenTime(req, res) {
     try {
       const { childId } = req.params;
