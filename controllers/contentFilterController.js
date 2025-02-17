@@ -33,6 +33,18 @@ class ContentFilterController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+
+  static async deleteFilter(req, res) {
+    try {
+      const { childId } = req.params;
+      const result = await ContentFilterService.deleteFilter(childId);
+      return res.status(200).json(result);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+  
 }
 
 export default ContentFilterController;

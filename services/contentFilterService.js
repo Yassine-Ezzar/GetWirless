@@ -35,6 +35,17 @@ class ContentFilterService {
 
     return false;
   }
+
+
+
+  static async deleteFilter(childId) {
+    const deletedFilter = await ContentFilter.findOneAndDelete({ child: childId });
+    if (!deletedFilter) throw new Error("Aucune règle de filtrage trouvée.");
+    return { message: "Règles de filtrage supprimées avec succès." };
+  }
+  
 }
+
+
 
 export default ContentFilterService;
