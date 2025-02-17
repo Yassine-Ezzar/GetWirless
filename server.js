@@ -8,7 +8,7 @@ import childRoutes from "./routes/childRoutes.js";
 import screenTimeRoutes from "./routes/screenTimeRoutes.js";
 import "./models/Child.js"; 
 import helmet from 'helmet';
-
+import applicationControlRoutes from './routes/appControlRoutes.js';
 import contentFilterRoutes from './routes/contentFilterRoutes.js';
 import proxyRoutes from './routes/proxyRoutes.js';
 
@@ -19,6 +19,7 @@ const app = express();
 app.use(express.json());
 
 app.use(helmet());
+app.use('/api/application-control', applicationControlRoutes);
 app.use('/api/proxy', proxyRoutes);
 app.use('/api/content-filter', contentFilterRoutes);
 app.use("/api/screen-time", screenTimeRoutes);

@@ -140,3 +140,48 @@ Content-Type: application/json
   "url": "example.com"
 }
 
+****************************************************************************
+### Récupérer les règles de gestion des applications
+GET http://localhost:5000/api/application-control/childId123
+
+### Ajouter des applications à la liste noire/blanche
+PUT http://localhost:5000/api/application-control/childId123/lists
+Content-Type: application/json
+
+{
+  "blacklist": ["TikTok", "Instagram"],
+  "whitelist": ["Google Classroom", "Zoom"]
+}
+
+### Enregistrer le temps d'utilisation d'une application
+PUT http://localhost:5000/api/application-control/childId123/log-usage
+Content-Type: application/json
+
+{
+  "appName": "YouTube",
+  "minutes": 30
+}
+
+### Demander l'installation d'une application
+PUT http://localhost:5000/api/application-control/childId123/request-install
+Content-Type: application/json
+
+{
+  "appName": "Snapchat"
+}
+
+### Approuver l'installation d'une application
+PUT http://localhost:5000/api/application-control/childId123/approve-install
+Content-Type: application/json
+
+{
+  "appName": "Snapchat"
+}
+
+### Activer/Désactiver la restriction des achats
+PUT http://localhost:5000/api/application-control/childId123/toggle-purchase
+Content-Type: application/json
+
+{
+  "status": true
+}
