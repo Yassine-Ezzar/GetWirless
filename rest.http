@@ -88,25 +88,65 @@ Authorization: Bearer <token_parent>
 ### Récupérer les règles de temps d'écran d'un enfant
 GET http://localhost:5000/api/screen-time/{childId}
 
-### Définir les règles de temps d'écran pour un enfant
-POST http://localhost:5000/api/screen-time/{childId}
+############## Définir les limites du temps d’écran pour un enfant
+PUT http://localhost:5000/api/screen-time/childId123
 Content-Type: application/json
+
 {
   "dailyLimit": 120,
-  "weeklyLimit": 600
+  "usagePeriods": [
+    {
+      "dayOfWeek": "lundi",
+      "start": "2025-02-19T08:00:00Z",
+      "end": "2025-02-19T17:00:00Z"
+    },
+    {
+      "dayOfWeek": "mardi",
+      "start": "2025-02-19T08:00:00Z",
+      "end": "2025-02-19T17:00:00Z"
+    }
+  ],
+  "schoolMode": {
+    "active": true,
+    "blockedApps": ["Instagram", "TikTok"]
+  },
+  "restrictedApps": ["PUBG", "Clash of Clans"]
 }
 
-### Mettre à jour le temps d'écran utilisé
-PUT http://localhost:5000/api/screen-time/{childId}/update
+### Suivi du temps passé sur l'appareil
+POST http://localhost:5000/api/screen-time/childId123/track-usage
 Content-Type: application/json
+
 {
-  "timeSpent": 30,
-  "isToday": true
+  "timeSpent": 30 // Temps passé en minutes
 }
+
 
 ### Réinitialiser le temps d'écran
 PUT http://localhost:5000/api/screen-time/{childId}/reset
 
+ ##Limiter l'utilisation des écrans avant le coucher :
+
+POST http://localhost:5000/api/screen-time/:childId/limit-bedtime
+
+ ##Suivi des habitudes de sommeil :
+
+POST http://localhost:5000/api/screen-time/:childId/track-sleep
+Content-Type: application/json
+{
+  "sleepStartTime": "2025-02-19T22:00:00",
+  "sleepEndTime": "2025-02-20T06:00:00"
+}
+
+####Alerte d'utilisation excessive :
+
+POST http://localhost:5000/api/screen-time/alert-excessive-usage
+Content-Type: application/json
+{
+  "childId": "childId123",
+  "appName": "Facebook",
+  "maxUsageTime": 30
+}
 
 
 ***************************************************************************
