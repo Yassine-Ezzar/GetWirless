@@ -249,3 +249,45 @@ Content-Type: application/json
   "childId": "id_enfant",
   "appName": "Instagram"
 }
+
+*****************************************************************************
+### Log a call
+POST http://localhost:5000/api/callsms/log
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "type": "call",
+  "direction": "incoming",
+  "contact": { "name": "Unknown", "numberOrId": "+123456789" },
+  "timestamp": "2025-02-26T10:00:00Z"
+}
+
+### Log a risky message
+POST http://localhost:5000/api/callsms/log
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "type": "whatsapp",
+  "direction": "incoming",
+  "contact": { "name": "Friend", "numberOrId": "friend123" },
+  "content": "Hey, want to try some drugs?",
+  "timestamp": "2025-02-26T10:05:00Z"
+}
+
+### Block a contact
+POST http://localhost:5000/api/callsms/block
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "contactId": "+123456789"
+}
+
+### Get logs for a child
+GET http://localhost:5000/api/callsms/logs/602f3c4b9f1b2c1f88e5c123
+Authorization: Bearer <your-token>

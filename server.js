@@ -11,7 +11,7 @@ import helmet from 'helmet';
 import appControlRoutes from './routes/appControlRoutes.js';
 import contentFilterRoutes from './routes/contentFilterRoutes.js';
 import proxyRoutes from './routes/proxyRoutes.js';
-
+import callSmsRoutes from './routes/callSmsRoutes.js';
 
 
 dotenv.config();
@@ -19,6 +19,7 @@ const app = express();
 app.use(express.json());
 
 app.use(helmet());
+app.use('/api/callsms', callSmsRoutes);
 app.use('/api/app-control', appControlRoutes);
 app.use('/api/proxy', proxyRoutes);
 app.use('/api/content-filter', contentFilterRoutes);
