@@ -1,13 +1,15 @@
 import express from 'express';
-import ApplicationControlController from '../controllers/appControlController.js';
+import { addAppControl, getChildAppControls, updateAppUsage, updateAppRestrictions,blockApp,requestAppInstallation,approveAppInstallation } from '../controllers/appControlController.js';
+import { authenticate } from '../middlewares/authMidlewares.js';
 
 const router = express.Router();
 
-router.get('/:childId', ApplicationControlController.getControl);
-router.put('/:childId/lists', ApplicationControlController.updateLists);
-router.put('/:childId/log-usage', ApplicationControlController.logUsage);
-router.put('/:childId/request-install', ApplicationControlController.requestInstall);
-router.put('/:childId/approve-install', ApplicationControlController.approveInstall);
-router.put('/:childId/toggle-purchase', ApplicationControlController.togglePurchaseRestriction);
+router.post('/', authenticate, addAppControl);
+router.get('/:childId', authenticate, getChildAppControls);
+router.put('/usage', authenticate, updateAppUsage);
+router.put('/restrictions', authenticate, updateAppRestrictions);
+router.post('/block', blockApp);
+router.post('/request', requestAppInstallation);
+router.post('/approve', approveAppInstallation);
 
 export default router;

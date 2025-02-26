@@ -1,71 +1,93 @@
-import ApplicationControlService from '../services/appControlService.js';
+import AppControl from '../models/AppControl.js';
+import { checkAlert, formatStats } from '../utils/helpers.js';
 
-class ApplicationControlController {
-  static async getControl(req, res) {
-    try {
-      const { childId } = req.params;
-      const control = await ApplicationControlService.getControl(childId);
-      if (!control) return res.status(404).json({ message: "Aucune règle trouvée." });
-      return res.status(200).json(control);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+export const addAppControl = async (req, res) => {
+  try {
+    const appControl = new AppControl(req.body);
+    await appControl.save();
+    res.status(201).json(appControl);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+};
 
-  static async updateLists(req, res) {
-    try {
-      const { childId } = req.params;
-      const { blacklist, whitelist } = req.body;
-      const control = await ApplicationControlService.updateLists(childId, blacklist, whitelist);
-      return res.status(200).json(control);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+export const getChildAppControls = async (req, res) => {
+  try {
+    const apps = await AppControl.find({ childId: req.params.childId });
+    res.json(formatStats(apps));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+};
 
-  static async logUsage(req, res) {
-    try {
-      const { childId } = req.params;
-      const { appName, minutes } = req.body;
-      const control = await ApplicationControlService.logUsage(childId, appName, minutes);
-      return res.status(200).json(control);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+export const updateAppUsage = async (req, res) => {
+  try {
+    const { childId, appName, minutes } = req.body;
+    const app = await AppControl.findOneAndUpdate(
+      { childId, appName },
+      { $inc: { usageTime: minutes } },
+      { new: true, upsert: true }
+    );
+    checkAlert(app);
+    res.json(app);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+};
 
-  static async requestInstall(req, res) {
-    try {
-      const { childId } = req.params;
-      const { appName } = req.body;
-      const control = await ApplicationControlService.requestInstall(childId, appName);
-      return res.status(200).json(control);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+export const updateAppRestrictions = async (req, res) => {
+  try {
+    const { childId, appName, blocked, dailyLimit, purchaseRestricted } = req.body;
+    const app = await AppControl.findOneAndUpdate(
+      { childId, appName },
+      { blocked, dailyLimit, purchaseRestricted },
+      { new: true }
+    );
+    res.json(app);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
+};
 
-  static async approveInstall(req, res) {
-    try {
-      const { childId } = req.params;
-      const { appName } = req.body;
-      const control = await ApplicationControlService.approveInstall(childId, appName);
-      return res.status(200).json(control);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+
+export const blockApp = async (req, res) => {
+  const { childId, appName } = req.body;
+  try {
+      const appControl = await AppControl.findOneAndUpdate(
+          { childId },
+          { $addToSet: { blockedApps: appName } },
+          { new: true, upsert: true }
+      );
+      res.status(200).json(appControl);
+  } catch (error) {
+      res.status(500).json({ message: 'Erreur lors du blocage de l’application' });
   }
+};
 
-  static async togglePurchaseRestriction(req, res) {
-    try {
-      const { childId } = req.params;
-      const { status } = req.body;
-      const control = await ApplicationControlService.togglePurchaseRestriction(childId, status);
-      return res.status(200).json(control);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+export const requestAppInstallation = async (req, res) => {
+  const { childId, appName } = req.body;
+  try {
+      const appControl = await AppControl.findOneAndUpdate(
+          { childId },
+          { $push: { pendingApps: { name: appName } } },
+          { new: true, upsert: true }
+      );
+      res.status(200).json({ message: 'Demande envoyée', appControl });
+  } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la demande' });
   }
-}
+};
 
-export default ApplicationControlController;
+export const approveAppInstallation = async (req, res) => {
+  const { childId, appName } = req.body;
+  try {
+      const appControl = await AppControl.findOneAndUpdate(
+          { childId, 'pendingApps.name': appName },
+          { $set: { 'pendingApps.$.status': 'approved' } },
+          { new: true }
+      );
+      res.status(200).json({ message: 'Application approuvée', appControl });
+  } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de l’approbation' });
+  }
+};

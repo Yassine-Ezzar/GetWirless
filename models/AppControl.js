@@ -1,20 +1,13 @@
 import mongoose from 'mongoose';
 
-const applicationControlSchema = new mongoose.Schema(
-  {
-    child: { type: mongoose.Schema.Types.ObjectId, ref: 'Child', required: true },
-    blacklist: { type: [String], default: [] }, 
-    whitelist: { type: [String], default: [] }, 
-    monitoredApps: { 
-      type: Map, 
-      of: Number, 
-      default: {} 
-    },
-    appInstallRequests: { type: [String], default: [] }, 
-    purchaseRestrictions: { type: Boolean, default: true }, 
-  },
-  { timestamps: true }
-);
+const AppControlSchema = new mongoose.Schema({
+    childId: { type: mongoose.Schema.Types.ObjectId, ref: 'Child', required: true },
+    blockedApps: [{ type: String }], // Liste des applications bloquées
+    pendingApps: [{
+        name: String,
+        requestedAt: { type: Date, default: Date.now },
+        status: { type: String, enum: ['pending', 'approved', 'denied'], default: 'pending' }
+    }]
+}, { timestamps: true });
 
-const ApplicationControl = mongoose.model('ApplicationControl', applicationControlSchema);
-export default ApplicationControl;
+export default mongoose.model('AppControl', AppControlSchema);
