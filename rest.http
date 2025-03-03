@@ -337,3 +337,48 @@ Authorization: Bearer <votre-token>
 ### Récupérer le temps passé sur Instagram
 GET http://localhost:5000/api/socialmedia/time/602f3c4b9f1b2c1f88e5c123/instagram
 Authorization: Bearer <votre-token>
+
+*****************************************************************************
+
+### Mettre à jour la position de l’enfant
+POST http://localhost:5000/api/geolocation/update
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "latitude": 36.854351,
+  "longitude": 10.190131
+}
+
+### Envoyer une alerte SOS
+POST http://localhost:5000/api/geolocation/sos
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "latitude": 36.847208,
+  "longitude": 10.269147
+}
+
+### Récupérer l’historique des déplacements
+GET http://localhost:5000/api/geolocation/history/67aca7e177d4708a5a379037
+Authorization: Bearer <votre-token>
+
+### Créer une zone sécurisée (ex. : Maison)
+POST http://localhost:5000/api/geolocation/safezone
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "name": "Maison",
+  "latitude": 36.854351,
+  "longitude": 10.190131,
+  "radius": 500
+}
+
+### Récupérer les zones sécurisées
+GET http://localhost:5000/api/geolocation/safezones/67aca7e177d4708a5a379037
+Authorization: Bearer <votre-token>
