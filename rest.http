@@ -429,3 +429,44 @@ Authorization: Bearer <votre-token>
 ### Récupérer l’historique des vidéos regardées
 GET http://localhost:5000/api/media/history/67aca7e177d4708a5a379037
 Authorization: Bearer <votre-token>
+
+*****************************************************************************
+
+### Récupérer le tableau de bord
+GET http://localhost:5000/api/reports/dashboard/67aca7e177d4708a5a379037
+Authorization: Bearer <votre-token>
+
+### Envoyer une alerte instantanée (nouveau contact suspect)
+POST http://localhost:5000/api/reports/alert
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "activityType": "new_contact",
+  "details": { "message": "Nouveau contact suspect ajouté : +123456789" }
+}
+
+### Générer un rapport quotidien
+POST http://localhost:5000/api/reports/generate
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "period": "daily"
+}
+
+### Générer un rapport hebdomadaire
+POST http://localhost:5000/api/reports/generate
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "period": "weekly"
+}
+
+### Récupérer les rapports précédents
+GET http://localhost:5000/api/reports/reports/67aca7e177d4708a5a379037
+Authorization: Bearer <votre-token>
