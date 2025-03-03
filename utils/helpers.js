@@ -15,8 +15,7 @@ export const checkAlert = (app) => {
 
   export const detectRiskyKeywords = (content) => {
     const riskyKeywords = [
-      'harasselement', 
-    ];
+'harcèlement', 'violence', 'drogue', 'alcool',   ];
     const words = content.toLowerCase().split(/\s+/);
     return riskyKeywords.filter((keyword) => words.includes(keyword));
   };
