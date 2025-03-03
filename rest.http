@@ -291,3 +291,49 @@ Authorization: Bearer <your-token>
 ### Get logs for a child
 GET http://localhost:5000/api/callsms/logs/602f3c4b9f1b2c1f88e5c123
 Authorization: Bearer <your-token>
+
+
+*****************************************************************************
+### Enregistrer une activité sur Instagram (message suspect)
+POST http://localhost:5000/api/socialmedia/log
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "platform": "instagram",
+  "activityType": "message",
+  "content": "Tu es nul, dégage !",
+  "interactedWith": { "username": "inconnu123", "isSuspicious": true }
+}
+
+### Enregistrer une recherche sur TikTok
+POST http://localhost:5000/api/socialmedia/log
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "platform": "tiktok",
+  "activityType": "search",
+  "content": "drogue astuces"
+}
+
+### Mettre à jour le temps passé sur TikTok
+POST http://localhost:5000/api/socialmedia/time
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "platform": "tiktok",
+  "minutes": 70
+}
+
+### Récupérer les logs d’un enfant
+GET http://localhost:5000/api/socialmedia/logs/602f3c4b9f1b2c1f88e5c123
+Authorization: Bearer <votre-token>
+
+### Récupérer le temps passé sur Instagram
+GET http://localhost:5000/api/socialmedia/time/602f3c4b9f1b2c1f88e5c123/instagram
+Authorization: Bearer <votre-token>
