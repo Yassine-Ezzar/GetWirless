@@ -16,6 +16,7 @@ import contentFilterRoutes from './routes/contentFilterRoutes.js';
 import proxyRoutes from './routes/proxyRoutes.js';
 import callSmsRoutes from './routes/callSmsRoutes.js';
 import geolocationRoutes from './routes/geolocationRoutes.js';
+import mediaRoutes from './routes/mediaRoutes.js';
 
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use('/api/content-filter', contentFilterRoutes);
 app.use("/api/screen-time", screenTimeRoutes);
 app.use('/api/socialmedia', socialMediaRoutes);
 app.use('/api/geolocation', geolocationRoutes);
+app.use('/api/media', mediaRoutes);
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));

@@ -257,7 +257,7 @@ Content-Type: application/json
 Authorization: Bearer <your-token>
 
 {
-  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "childId": "67aca7e177d4708a5a379037",
   "type": "call",
   "direction": "incoming",
   "contact": { "name": "Unknown", "numberOrId": "+123456789" },
@@ -270,7 +270,7 @@ Content-Type: application/json
 Authorization: Bearer <your-token>
 
 {
-  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "childId": "67aca7e177d4708a5a379037",
   "type": "whatsapp",
   "direction": "incoming",
   "contact": { "name": "Friend", "numberOrId": "friend123" },
@@ -284,12 +284,12 @@ Content-Type: application/json
 Authorization: Bearer <your-token>
 
 {
-  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "childId": "67aca7e177d4708a5a379037",
   "contactId": "+123456789"
 }
 
 ### Get logs for a child
-GET http://localhost:5000/api/callsms/logs/602f3c4b9f1b2c1f88e5c123
+GET http://localhost:5000/api/callsms/logs/67aca7e177d4708a5a379037
 Authorization: Bearer <your-token>
 
 
@@ -300,7 +300,7 @@ Content-Type: application/json
 Authorization: Bearer <votre-token>
 
 {
-  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "childId": "67aca7e177d4708a5a379037",
   "platform": "instagram",
   "activityType": "message",
   "content": "Tu es nul, dégage !",
@@ -313,7 +313,7 @@ Content-Type: application/json
 Authorization: Bearer <votre-token>
 
 {
-  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "childId": "67aca7e177d4708a5a379037",
   "platform": "tiktok",
   "activityType": "search",
   "content": "drogue astuces"
@@ -325,17 +325,17 @@ Content-Type: application/json
 Authorization: Bearer <votre-token>
 
 {
-  "childId": "602f3c4b9f1b2c1f88e5c123",
+  "childId": "67aca7e177d4708a5a379037",
   "platform": "tiktok",
   "minutes": 70
 }
 
 ### Récupérer les logs d’un enfant
-GET http://localhost:5000/api/socialmedia/logs/602f3c4b9f1b2c1f88e5c123
+GET http://localhost:5000/api/socialmedia/logs/67aca7e177d4708a5a379037
 Authorization: Bearer <votre-token>
 
 ### Récupérer le temps passé sur Instagram
-GET http://localhost:5000/api/socialmedia/time/602f3c4b9f1b2c1f88e5c123/instagram
+GET http://localhost:5000/api/socialmedia/time/67aca7e177d4708a5a379037/instagram
 Authorization: Bearer <votre-token>
 
 *****************************************************************************
@@ -381,4 +381,51 @@ Authorization: Bearer <votre-token>
 
 ### Récupérer les zones sécurisées
 GET http://localhost:5000/api/geolocation/safezones/67aca7e177d4708a5a379037
+Authorization: Bearer <votre-token>
+
+*****************************************************************************
+
+### Enregistrer une vidéo regardée sur YouTube
+POST http://localhost:5000/api/media/log
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "platform": "youtube",
+  "videoId": "abc123",
+  "title": "Vidéo amusante",
+  "description": "Une vidéo rigolote pour enfants"
+}
+
+### Enregistrer une vidéo inappropriée
+POST http://localhost:5000/api/media/log
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "platform": "youtube",
+  "videoId": "xyz789",
+  "title": "Violence dans les jeux",
+  "description": "Contenu violent à éviter"
+}
+
+### Bloquer une vidéo manuellement
+POST http://localhost:5000/api/media/block
+Content-Type: application/json
+Authorization: Bearer <votre-token>
+
+{
+  "childId": "67aca7e177d4708a5a379037",
+  "videoId": "abc123",
+  "reason": "Contenu inapproprié signalé par le parent"
+}
+
+### Récupérer le rapport des vidéos les plus vues
+GET http://localhost:5000/api/media/report/67aca7e177d4708a5a379037
+Authorization: Bearer <votre-token>
+
+### Récupérer l’historique des vidéos regardées
+GET http://localhost:5000/api/media/history/67aca7e177d4708a5a379037
 Authorization: Bearer <votre-token>
