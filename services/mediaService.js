@@ -2,7 +2,6 @@ import Media from '../models/Media.js';
 import { sendEmail } from '../utils/emailService.js';
 import mongoose from 'mongoose'; 
 
-// Simulation d’une vérification IA 
 const checkInappropriateContent = async (title, description) => {
   const riskyKeywords = ['violence', 'sexe', 'drogue', 'nudité', 'arme', 'mort', 'torture']; 
   const content = `${title} ${description || ''}`.toLowerCase();
@@ -46,7 +45,6 @@ export const blockVideo = async (childId, videoId, reason) => {
 };
 
 export const getVideoReport = async (childId) => {
-  // Rapport des vidéos les plus regardées
   return await Media.aggregate([
     { $match: { childId: new mongoose.Types.ObjectId(childId) } },
     { $group: {

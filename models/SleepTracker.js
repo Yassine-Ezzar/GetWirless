@@ -1,10 +1,9 @@
-// models/SleepTracker.js
 import mongoose from 'mongoose';
 
 const sleepTrackerSchema = new mongoose.Schema({
   child: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Child',  // Suppose que vous avez un modèle "Child" pour identifier l'enfant
+    ref: 'Child',  
     required: true
   },
   sleepStartTime: {
@@ -16,7 +15,7 @@ const sleepTrackerSchema = new mongoose.Schema({
     required: true
   },
   sleepDuration: {
-    type: Number, // En heures
+    type: Number, 
     required: true
   },
   date: {

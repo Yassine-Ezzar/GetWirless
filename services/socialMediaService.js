@@ -36,7 +36,6 @@ export const sendAlert = async (childId, keywords, content, interactedWith) => {
 
   await sendEmail(parentEmail, subject, message);
 
-  // Notification en temps réel via WebSocket
   io.emit(`alert:${childId}`, { message, keywords, content, interactedWith });
 
   await SocialMedia.updateOne(

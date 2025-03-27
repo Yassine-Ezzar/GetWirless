@@ -5,7 +5,6 @@ export const logCallOrMessage = async (req, res, next) => {
   try {
     const { childId, type, direction, contact, content, timestamp } = req.body;
     
-    // Detect risky keywords if content exists (e.g., SMS or messaging apps)
     const flaggedKeywords = content ? detectRiskyKeywords(content) : [];
     
     const data = {

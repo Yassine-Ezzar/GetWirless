@@ -7,7 +7,6 @@ export const logVideoWatched = async (req, res, next) => {
     const data = { childId, platform, videoId, title, description };
     const result = await mediaService.logVideoWatched(data);
 
-    // Vérification IA pour contenu inapproprié
     const isInappropriate = await mediaService.checkInappropriateContent(title, description);
     if (isInappropriate) {
       await mediaService.blockVideo(childId, videoId, isInappropriate.reason);

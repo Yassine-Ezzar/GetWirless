@@ -18,7 +18,7 @@ const CallSmsSchema = new mongoose.Schema({
   },
   contact: {
     name: String,
-    numberOrId: String, // Phone number or app-specific ID
+    numberOrId: String, 
     isBlocked: { type: Boolean, default: false },
     isSuspicious: { type: Boolean, default: false },
   },

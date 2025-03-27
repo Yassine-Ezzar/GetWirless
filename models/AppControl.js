@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const AppControlSchema = new mongoose.Schema({
     childId: { type: mongoose.Schema.Types.ObjectId, ref: 'Child', required: true },
-    blockedApps: [{ type: String }], // Liste des applications bloquées
+    blockedApps: [{ type: String }], 
     pendingApps: [{
         name: String,
         requestedAt: { type: Date, default: Date.now },

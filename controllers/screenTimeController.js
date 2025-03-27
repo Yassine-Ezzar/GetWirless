@@ -14,17 +14,15 @@ class ScreenTimeController {
     }
   }
 
-  // Réinitialiser le temps d'écran de l'enfant
   static async resetScreenTime(req, res) {
     try {
       const { childId } = req.params;
 
-      // Réinitialiser le compteur de temps passé et la date de réinitialisation
       const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
       if (!screenTimeLimit) return res.status(404).json({ message: "Pas de règle de gestion du temps d'écran trouvée pour cet enfant." });
 
-      screenTimeLimit.timeSpent = 0; // Réinitialiser le temps passé
-      screenTimeLimit.lastReset = Date.now(); // Mettre à jour la date de réinitialisation
+      screenTimeLimit.timeSpent = 0; 
+      screenTimeLimit.lastReset = Date.now(); 
 
       await screenTimeLimit.save();
 
@@ -54,7 +52,7 @@ class ScreenTimeController {
   static async trackUsage(req, res) {
     try {
       const { childId } = req.params;
-      const { timeSpent } = req.body; // Temps passé en minutes
+      const { timeSpent } = req.body; 
 
       const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
 
@@ -62,8 +60,7 @@ class ScreenTimeController {
 
       screenTimeLimit.timeSpent += timeSpent;
       if (screenTimeLimit.timeSpent > screenTimeLimit.dailyLimit) {
-        // Block the device or certain apps
-        // Here you could implement some sort of block functionality for the device
+
         return res.status(403).json({ message: "Limite de temps dépassée, appareil bloqué." });
       }
 
@@ -88,19 +85,17 @@ class ScreenTimeController {
     return screenTimeLimit;
   }
 
-  // Réinitialiser le temps d'écran d'un enfant
   static async resetScreenTime(childId) {
     const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
     if (!screenTimeLimit) throw new Error("Aucune règle de gestion du temps d'écran trouvée.");
 
-    screenTimeLimit.timeSpent = 0; // Réinitialiser le temps passé
-    screenTimeLimit.lastReset = Date.now(); // Réinitialiser la date
+    screenTimeLimit.timeSpent = 0; 
+    screenTimeLimit.lastReset = Date.now(); 
     await screenTimeLimit.save();
 
     return screenTimeLimit;
   }
 
-  // Vérifier si l’enfant a dépassé la limite quotidienne
   static async isBlocked(childId) {
     const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
     if (!screenTimeLimit) return false;
@@ -118,9 +113,8 @@ class ScreenTimeController {
         return res.status(404).json({ message: "Aucune règle de gestion du temps d'écran trouvée." });
       }
 
-      const bedtime = screenTimeLimit.bedtime || "22:00"; // Heure de coucher définie dans la règle
+      const bedtime = screenTimeLimit.bedtime || "22:00"; 
       if (moment(currentTime, 'HH:mm').isAfter(moment(bedtime, 'HH:mm'))) {
-        // Limiter l'utilisation des applications
         screenTimeLimit.blockAppsBeforeBedtime = true;
         await screenTimeLimit.save();
 
@@ -134,7 +128,6 @@ class ScreenTimeController {
     }
   }
 
-  // Suivi des habitudes de sommeil (Utilisation de SleepTracker)
   static async trackSleepPattern(req, res) {
     try {
       const { childId } = req.params;
@@ -157,24 +150,20 @@ class ScreenTimeController {
     }
   }
 
-  // Alertes d’utilisation excessive
- // controllers/ScreenTimeController.js
+
 static async alertExcessiveUsage(req, res) {
   try {
     const { childId, appName, maxUsageTime } = req.body;
     
-    // Récupérer les limites de temps d'écran de l'enfant
     const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
     
     if (!screenTimeLimit) {
       return res.status(404).json({ message: "Aucune règle de gestion du temps d'écran trouvée." });
     }
 
-    // Vérifier si la propriété appUsage existe dans screenTimeLimit
-    const appUsage = screenTimeLimit.appUsage || {}; // Initialiser à un objet vide si appUsage est indéfini
-    const appUsageTime = appUsage[appName] || 0; // Par défaut, mettre 0 si l'application n'est pas trouvée
+    const appUsage = screenTimeLimit.appUsage || {}; 
+    const appUsageTime = appUsage[appName] || 0; 
 
-    // Vérifier si l'usage de l'application dépasse le temps autorisé
     if (appUsageTime > maxUsageTime) {
       return res.status(200).json({
         message: `Alerte : L'enfant a dépassé le temps d'utilisation de ${appName}`,

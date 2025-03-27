@@ -1,4 +1,3 @@
-// utils/timeUtils.js
 import moment from 'moment';
 
 export const checkIfWithinUsagePeriod = (usagePeriods) => {

@@ -25,14 +25,14 @@ const MediaSchema = new mongoose.Schema({
   },
   watchCount: {
     type: Number,
-    default: 1, // Nombre de fois regardée
+    default: 1, 
   },
   isBlocked: {
     type: Boolean,
-    default: false, // Vidéo bloquée si inappropriée
+    default: false, 
   },
   flaggedReason: {
-    type: String, // Raison du signalement (ex. : "violence")
+    type: String, 
     default: null,
   },
   timestamp: {
