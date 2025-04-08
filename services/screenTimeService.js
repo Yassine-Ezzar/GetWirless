@@ -9,7 +9,7 @@ class ScreenTimeService {
 
     const currentDate = moment().startOf('day');
     if (moment(screenTimeLimit.lastReset).isBefore(currentDate)) {
-      screenTimeLimit.timeSpent = 0; // Réinitialisation quotidienne
+      screenTimeLimit.timeSpent = 0; 
       screenTimeLimit.lastReset = Date.now();
       await screenTimeLimit.save();
     }
@@ -35,7 +35,6 @@ class ScreenTimeService {
     }
   }
 
-  // Suivi des habitudes de sommeil
   static async trackSleep(childId, sleepStartTime, sleepEndTime) {
     const sleepData = new SleepTracker({
       child: childId,
@@ -48,14 +47,12 @@ class ScreenTimeService {
     await sleepData.save();
   }
 
-  // Vérifier l'utilisation excessive d'une application
   static async checkExcessiveUsage(childId, appName, maxUsageTime) {
     const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
     const appUsage = screenTimeLimit.appUsage[appName] || 0;
     return appUsage > maxUsageTime;
   }
 
-  // Vérifier les comportements suspects
   static async checkSuspiciousBehavior(childId, contentType) {
     const screenTimeLimit = await ScreenTimeLimit.findOne({ child: childId });
     return screenTimeLimit.restrictedContent.includes(contentType);
